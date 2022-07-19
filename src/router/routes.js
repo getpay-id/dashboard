@@ -10,6 +10,20 @@ const routes = [
     },
   },
   {
+    path: "/payment",
+    component: () => import("layouts/DashboardLayout.vue"),
+    children: [
+      {
+        path: "gateway",
+        name: "paymentGateway",
+        component: () => import("pages/PaymentGateway/Index.vue"),
+      },
+    ],
+    meta: {
+      middlewares: [loginRequired],
+    },
+  },
+  {
     path: "/signin",
     component: () => import("layouts/BlankLayout.vue"),
     children: [{ path: "", component: () => import("pages/auth/SignIn.vue") }],

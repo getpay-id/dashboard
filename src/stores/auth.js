@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { router } from "src/router";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -9,26 +10,47 @@ export const useAuthStore = defineStore("auth", {
   }),
   getters: {
     isAuthenticated: (state) => !!state.accessToken,
-    axios: (state) => state.axiosInstance,
+    axios: (state) => {
+      const instance =
+        state.axiosInstance ||
+        axios.create({
+          baseURL: state.apiUrl,
+        });
+      if (state.accessToken) {
+        instance.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
+      }
+      // Add a response interceptor
+      instance.interceptors.response.use(
+        function (response) {
+          return response;
+        },
+        function (error) {
+          const resp = error.response;
+          const self = useAuthStore();
+          const isExpired =
+            resp.status === 400 && resp.data.detail === "Token has expired";
+          if (isExpired) {
+            self.logout();
+          }
+          return Promise.reject(error);
+        }
+      );
+      return instance;
+    },
   },
   actions: {
+    logout() {
+      this.accessToken = this.axiosInstance = null;
+      sessionStorage.removeItem("accessToken");
+      router.push("/signin");
+    },
     setApiUrl(url) {
       this.apiUrl = url;
       sessionStorage.setItem("apiUrl", url);
-      this.axiosInstance = axios.create({
-        baseURL: this.apiUrl,
-      });
     },
     setAccessToken(token) {
       this.accessToken = token;
       sessionStorage.setItem("accessToken", token);
-      this.axiosInstance.interceptors.request.use((config) => {
-        var headers = config.headers;
-        if (this.accessToken) {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-        return config;
-      });
     },
     async signIn(username, password) {
       var form = new FormData();

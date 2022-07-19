@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr fFf">
+  <q-layout view="hHh lpR fFf">
     <!-- Be sure to play with the Layout demo on docs -->
 
     <!-- (Optional) The Header -->
@@ -14,7 +14,13 @@
           @click="drawer = true"
         />
         <q-toolbar-title> Getpay </q-toolbar-title>
-        <q-btn label="Log Out" color="red-6" />
+        <q-btn
+          label="Log Out"
+          color="red"
+          rounded
+          size="sm"
+          @click="logout()"
+        />
       </q-toolbar>
     </q-header>
 
@@ -24,18 +30,24 @@
       :mini="$q.platform.is.desktop ? miniState : false"
       @mouseover="onMouseOver"
       @mouseout="onMouseOut"
-      :width="200"
+      :width="230"
       :breakpoint="500"
       bordered
       content-class="bg-grey-3"
     >
       <q-scroll-area class="fit">
         <q-list padding>
-          <q-item clickable v-ripple @click="$router.push('/dashboard')">
+          <q-item clickable @click="$router.push('/')">
             <q-item-section avatar>
               <q-icon color="primary" name="dashboard" />
             </q-item-section>
-            <q-item-section> Dashboard </q-item-section>
+            <q-item-section>Dashboard</q-item-section>
+          </q-item>
+          <q-item clickable @click="$router.push({ name: 'paymentGateway' })">
+            <q-item-section avatar>
+              <q-icon color="primary" name="account_balance" />
+            </q-item-section>
+            <q-item-section>Payment Gateway</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -45,30 +57,18 @@
       <!-- This is where pages get injected -->
       <router-view />
     </q-page-container>
-
-    <!-- <q-footer v-if="$q.platform.is.mobile">
-      <q-tabs v-model="tab" dense class="bg-primary">
-        <q-tab name="dashboard" icon="dashboard" label="Home" />
-        <q-tab name="dashboard" icon="dashboard" label="Home" />
-        <q-tab name="dashboard" icon="dashboard" label="Home" />
-        <q-tab name="dashboard" icon="dashboard" label="Home" />
-        <q-tab name="dashboard" icon="dashboard" label="Home" />
-      </q-tabs>
-    </q-footer> -->
   </q-layout>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
+import { useAuthStore } from "src/stores/auth";
 
-export default {
-  // name: 'LayoutName',
-
+export default defineComponent({
   setup() {
     return {
       drawer: ref(false),
       miniState: ref(true),
-      tab: ref("dashboard"),
     };
   },
   methods: {
@@ -82,6 +82,10 @@ export default {
         this.miniState = true;
       }
     },
+    logout() {
+      const authStore = useAuthStore();
+      authStore.logout();
+    },
   },
-};
+});
 </script>
