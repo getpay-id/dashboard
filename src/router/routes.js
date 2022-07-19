@@ -18,6 +18,11 @@ const routes = [
         name: "paymentGateway",
         component: () => import("pages/PaymentGateway/Index.vue"),
       },
+      {
+        path: "method/:id",
+        name: "paymentMethod",
+        component: () => import("pages/PaymentMethod/Index.vue"),
+      },
     ],
     meta: {
       middlewares: [loginRequired],

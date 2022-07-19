@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-table title="Payment Gateway" :rows="rows" :columns="columns">
+    <q-table title="Payment Method" :rows="rows" :columns="columns">
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="name" :props="props">
@@ -19,6 +19,9 @@
               keep-color
               @click="onToggle(props.row)"
             />
+          </q-td>
+          <q-td key="code" :props="props">
+            <q-chip>{{ props.row.code }}</q-chip>
           </q-td>
           <q-td key="date_created" :props="props">
             {{ $formatDate(props.row.date_created) }}
@@ -48,23 +51,25 @@ import { useAuthStore } from "src/stores/auth";
 import { usePaymentStore } from "src/stores/payment";
 
 export default defineComponent({
-  name: "PaymentGateway",
-  preFetch() {
+  name: "PaymentMethod",
+  preFetch({ currentRoute }) {
     const authStore = useAuthStore();
     const paymentStore = usePaymentStore();
     return authStore.axios
-      .get("/payment/gateway/")
+      .get("/payment/method/", {
+        params: { pg_id: currentRoute.params.id },
+      })
       .then((res) => {
-        paymentStore.setPaymentGateways(res.data.data);
+        paymentStore.setPaymentMethods(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
   setup() {
-    const { paymentGateways } = storeToRefs(usePaymentStore());
+    const { paymentMethods } = storeToRefs(usePaymentStore());
     return {
-      rows: paymentGateways,
+      rows: paymentMethods,
       columns: [
         {
           name: "name",
@@ -76,6 +81,12 @@ export default defineComponent({
           name: "status",
           label: "Status",
           field: "status",
+          align: "left",
+        },
+        {
+          name: "code",
+          label: "Code",
+          field: "code",
           align: "left",
         },
         {
@@ -103,7 +114,7 @@ export default defineComponent({
     onToggle(row) {
       const authStore = useAuthStore();
       authStore.axios
-        .put(`/payment/gateway/${row.id}`, {
+        .put(`/payment/method/${row.id}`, {
           status: row.status,
         })
         .then((res) => {
@@ -115,12 +126,7 @@ export default defineComponent({
         });
     },
     manage(row) {
-      this.$router.push({
-        name: "paymentMethod",
-        params: {
-          id: row.id,
-        },
-      });
+      console.log("manage", row);
     },
   },
 });
