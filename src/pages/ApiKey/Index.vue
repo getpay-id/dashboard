@@ -128,25 +128,42 @@ export default defineComponent({
     };
   },
   methods: {
-    onToggle(row) {
-      const authStore = useAuthStore();
-      authStore.axios
-        .put(`/payment/gateway/${row.id}`, {
-          status: row.status,
-        })
-        .then((res) => {
-          const { date_updated } = res.data;
-          row.date_updated = date_updated;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     edit(row) {
       console.log("edit", row);
     },
     remove(row) {
-      console.log("remove", row);
+      this.$q
+        .dialog({
+          title: "Delete API Key",
+          message: "Are you sure you want to delete this API Key?",
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(() => {
+          console.log("delete", row);
+          const authStore = useAuthStore();
+          authStore.axios
+            .delete(`/apikey/${row.id}`)
+            .then((res) => {
+              if (res.data.success) {
+                this.rows = this.rows.filter((r) => r.id !== row.id);
+                this.$q.notify({
+                  color: "positive",
+                  message: "API Key Removed",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              this.$q.notify({
+                color: "negative",
+                text: "API Key Could Not Be Removed",
+              });
+            });
+        })
+        .onCancel(() => {
+          console.log("cancel");
+        });
     },
   },
 });
