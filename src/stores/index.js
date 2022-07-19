@@ -2,6 +2,7 @@ import { store } from "quasar/wrappers";
 import { createPinia } from "pinia";
 import { useAuthStore } from "./auth";
 import { usePaymentStore } from "./payment";
+import { useApiKeyStore } from "./apikey";
 
 /*
  * If not building with SSR mode, you can
@@ -16,6 +17,7 @@ export default store((/* { ssrContext } */) => {
   const pinia = createPinia();
   useAuthStore(pinia);
   usePaymentStore(pinia);
+  useApiKeyStore(pinia);
   // You can add Pinia plugins here
   // pinia.use(SomePiniaPlugin)
 

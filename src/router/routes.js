@@ -29,6 +29,20 @@ const routes = [
     },
   },
   {
+    path: "/apikey",
+    component: () => import("layouts/DashboardLayout.vue"),
+    children: [
+      {
+        name: "apiKey",
+        path: "",
+        component: () => import("pages/ApiKey/Index.vue"),
+      },
+    ],
+    meta: {
+      middlewares: [loginRequired],
+    },
+  },
+  {
     path: "/signin",
     component: () => import("layouts/BlankLayout.vue"),
     children: [{ path: "", component: () => import("pages/Auth/SignIn.vue") }],
