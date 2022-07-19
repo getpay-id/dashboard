@@ -5,24 +5,24 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js 18.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: "18.x"
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.3.4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BASE_BRANCH: main
-        BRANCH: gh-pages
-        FOLDER: dist/spa
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build --if-present
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.3.4
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: dist/spa
