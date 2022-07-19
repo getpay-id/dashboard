@@ -6,7 +6,9 @@ import moment from "moment-timezone";
 export default boot(async ({ app }) => {
   // You can create filters here, I recommend using the '$' prefix before the function name.
   app.config.globalProperties.$formatDate = function (dateString) {
-    const date = new Date(dateString);
-    return moment(date).tz("Asia/Jakarta").format("DD/MM/YYYY, h:mm a");
+    if (dateString) {
+      const date = new Date(dateString);
+      return moment(date).tz("Asia/Jakarta").format("DD/MM/YYYY, h:mm a");
+    }
   };
 });
