@@ -68,7 +68,6 @@
 <script>
 import { ref } from "vue";
 import { useAuthStore } from "src/stores/auth";
-import { useQuasar } from "quasar";
 
 export default {
   // name: 'PageName',
