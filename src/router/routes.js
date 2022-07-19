@@ -31,7 +31,7 @@ const routes = [
   {
     path: "/signin",
     component: () => import("layouts/BlankLayout.vue"),
-    children: [{ path: "", component: () => import("pages/auth/SignIn.vue") }],
+    children: [{ path: "", component: () => import("pages/Auth/SignIn.vue") }],
   },
   // Always leave this as last one,
   // but you can also remove it
