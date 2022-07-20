@@ -2,7 +2,7 @@
   <q-page class="q-pa-md">
     <q-card>
       <q-card-section>
-        <div class="text-h6">Details</div>
+        <div class="text-h6">Create API Key</div>
       </q-card-section>
       <q-separator></q-separator>
       <q-form @submit.prevent="createApiKey">
