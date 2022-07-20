@@ -140,7 +140,7 @@ export default defineComponent({
   },
   methods: {
     edit(row) {
-      console.log("edit", row);
+      this.$router.push({ name: "apiKeyEdit", params: { id: row.id } });
     },
     remove(row) {
       this.$q
