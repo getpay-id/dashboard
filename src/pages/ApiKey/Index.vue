@@ -4,7 +4,13 @@
       <template v-slot:top>
         <div class="col-2 q-table__title">API Keys</div>
         <q-space />
-        <q-btn color="primary" rounded label="Create New" size="sm" />
+        <q-btn
+          color="primary"
+          rounded
+          label="Create New"
+          size="sm"
+          @click="$router.push({ name: 'apiKeyCreate' })"
+        />
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
@@ -18,7 +24,12 @@
           </q-td>
           <q-td key="duration" :props="props">
             <q-chip color="green" text-color="white">
-              <q-avatar color="white" text-color="black" size="sm">
+              <q-avatar
+                v-if="props.row.expiration_type !== 'unlimited'"
+                color="white"
+                text-color="black"
+                size="sm"
+              >
                 {{ props.row.expiration_time }}
               </q-avatar>
               {{ props.row.expiration_type }}

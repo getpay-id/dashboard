@@ -37,6 +37,11 @@ const routes = [
         path: "",
         component: () => import("pages/ApiKey/Index.vue"),
       },
+      {
+        name: "apiKeyCreate",
+        path: "create",
+        component: () => import("pages/ApiKey/Create.vue"),
+      },
     ],
     meta: {
       middlewares: [loginRequired],
