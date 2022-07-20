@@ -29,6 +29,30 @@ const routes = [
     },
   },
   {
+    path: "/apikey",
+    component: () => import("layouts/DashboardLayout.vue"),
+    children: [
+      {
+        name: "apiKey",
+        path: "",
+        component: () => import("pages/ApiKey/Index.vue"),
+      },
+      {
+        name: "apiKeyCreate",
+        path: "create",
+        component: () => import("pages/ApiKey/Create.vue"),
+      },
+      {
+        name: "apiKeyEdit",
+        path: "edit/:id",
+        component: () => import("pages/ApiKey/Edit.vue"),
+      },
+    ],
+    meta: {
+      middlewares: [loginRequired],
+    },
+  },
+  {
     path: "/signin",
     component: () => import("layouts/BlankLayout.vue"),
     children: [{ path: "", component: () => import("pages/Auth/SignIn.vue") }],

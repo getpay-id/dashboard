@@ -49,6 +49,12 @@
             </q-item-section>
             <q-item-section>Payment Gateway</q-item-section>
           </q-item>
+          <q-item clickable @click="$router.push({ name: 'apiKey' })">
+            <q-item-section avatar>
+              <q-icon color="primary" name="key" />
+            </q-item-section>
+            <q-item-section>API Keys</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
