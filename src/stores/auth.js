@@ -9,6 +9,7 @@ export const useAuthStore = defineStore("auth", {
     axiosInstance: null,
   }),
   getters: {
+    baseUrl: (state) => new URL(state.apiUrl).origin,
     isAuthenticated: (state) => !!state.accessToken,
     axios: (state) => {
       const instance =

@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import { useAuthStore } from "./auth";
 import { usePaymentStore } from "./payment";
 import { useApiKeyStore } from "./apikey";
+import { useMediaStore } from "./media";
 
 /*
  * If not building with SSR mode, you can
@@ -18,6 +19,7 @@ export default store((/* { ssrContext } */) => {
   useAuthStore(pinia);
   usePaymentStore(pinia);
   useApiKeyStore(pinia);
+  useMediaStore(pinia);
   // You can add Pinia plugins here
   // pinia.use(SomePiniaPlugin)
 

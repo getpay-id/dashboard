@@ -53,6 +53,30 @@ const routes = [
     },
   },
   {
+    path: "/media",
+    component: () => import("layouts/DashboardLayout.vue"),
+    children: [
+      {
+        name: "media",
+        path: "",
+        component: () => import("pages/Media/Index.vue"),
+      },
+      {
+        name: "mediaUpload",
+        path: "upload",
+        component: () => import("pages/Media/Upload.vue"),
+      },
+      {
+        name: "mediaEdit",
+        path: "edit/:id",
+        component: () => import("pages/Media/Edit.vue"),
+      },
+    ],
+    meta: {
+      middlewares: [loginRequired],
+    },
+  },
+  {
     path: "/signin",
     component: () => import("layouts/BlankLayout.vue"),
     children: [{ path: "", component: () => import("pages/Auth/SignIn.vue") }],

@@ -55,6 +55,12 @@
             </q-item-section>
             <q-item-section>API Keys</q-item-section>
           </q-item>
+          <q-item clickable @click="$router.push({ name: 'media' })">
+            <q-item-section avatar>
+              <q-icon color="primary" name="web_asset" />
+            </q-item-section>
+            <q-item-section>Media</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
