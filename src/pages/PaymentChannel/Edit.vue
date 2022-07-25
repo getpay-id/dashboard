@@ -109,7 +109,7 @@
           >
             <template v-slot:item="props">
               <div class="q-ma-md">
-                <q-card>
+                <q-card @click="markMedia(props.row)">
                   <div class="flex justify-center q-pa-xs">
                     <q-img
                       :src="baseUrl + props.row.file"
@@ -117,20 +117,37 @@
                       height="100px"
                       fit="contain"
                     />
+                    <q-badge
+                      v-if="selectedRow && selectedRow.id == props.row.id"
+                      rounded
+                      color="green-7"
+                      class="absolute"
+                      style="top: 0; right: -10px; transform: translateY(-50%)"
+                    >
+                      <q-icon name="check"></q-icon>
+                    </q-badge>
                   </div>
                 </q-card>
               </div>
             </template>
           </q-table>
         </q-card-section>
-        <q-card-actions>
+        <q-card-actions class="justify-between">
           <q-btn
-            class="full-width"
             color="primary"
             size="sm"
             outline
-            @click="console.log('belum')"
-            >New Upload ?</q-btn
+            @click="newUpload"
+            icon="file_upload"
+            >New Upload</q-btn
+          >
+          <q-btn
+            v-if="selectedRow"
+            color="primary"
+            size="sm"
+            outline
+            @click="selectMedia"
+            >Select</q-btn
           >
         </q-card-actions>
       </q-card>
@@ -165,6 +182,7 @@ export default defineComponent({
       dense: true,
       mediaDialog: ref(false),
       baseUrl,
+      selectedRow: ref(null),
       mediaRows: ref([]),
       mediaColumns: [
         {
@@ -178,6 +196,30 @@ export default defineComponent({
     };
   },
   methods: {
+    newUpload() {
+      console.log("newUpload, belum...");
+    },
+    selectMedia() {
+      console.log("selectMedia", this.selectedRow);
+      this.data.img = this.selectedRow.file;
+      this.selectedRow = null;
+      this.mediaDialog = false;
+    },
+    markMedia(row) {
+      for (var i = 0; i < this.mediaRows.length; i++) {
+        const r = this.mediaRows[i];
+        if (r.id != row.id) {
+          r.selected = false;
+        }
+      }
+      if (row.selected) {
+        this.selectedRow = null;
+        row.selected = false;
+      } else {
+        this.selectedRow = row;
+        row.selected = true;
+      }
+    },
     showMediaDialog() {
       const authStore = useAuthStore();
       // TODO: add pagination
@@ -189,7 +231,13 @@ export default defineComponent({
           },
         })
         .then((res) => {
-          this.mediaRows = res.data.data;
+          const data = res.data.data.map((item) => {
+            return {
+              ...item,
+              selected: false,
+            };
+          });
+          this.mediaRows = data;
           this.mediaDialog = true;
         });
     },
