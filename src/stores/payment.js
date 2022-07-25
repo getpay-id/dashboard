@@ -4,6 +4,8 @@ export const usePaymentStore = defineStore("payment", {
   state: () => ({
     paymentGateways: [],
     paymentMethods: [],
+    paymentChannels: [],
+    paymentChannelObject: {},
   }),
   actions: {
     setPaymentGateways(data) {
@@ -11,6 +13,12 @@ export const usePaymentStore = defineStore("payment", {
     },
     setPaymentMethods(data) {
       this.paymentMethods = data;
+    },
+    setPaymentChannels(data) {
+      this.paymentChannels = data;
+    },
+    setPaymentChannelObject(data) {
+      this.paymentChannelObject = data;
     },
   },
 });

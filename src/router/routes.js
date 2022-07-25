@@ -23,6 +23,16 @@ const routes = [
         name: "paymentMethod",
         component: () => import("pages/PaymentMethod/Index.vue"),
       },
+      {
+        path: "channel/:pm_id",
+        name: "paymentChannel",
+        component: () => import("pages/PaymentChannel/Index.vue"),
+      },
+      {
+        path: "channel/:pm_id/edit/:id",
+        name: "paymentChannelEdit",
+        component: () => import("pages/PaymentChannel/Edit.vue"),
+      },
     ],
     meta: {
       middlewares: [loginRequired],
