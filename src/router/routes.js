@@ -76,11 +76,6 @@ const routes = [
         path: "upload",
         component: () => import("pages/Media/Upload.vue"),
       },
-      {
-        name: "mediaEdit",
-        path: "edit/:id",
-        component: () => import("pages/Media/Edit.vue"),
-      },
     ],
     meta: {
       middlewares: [loginRequired],
